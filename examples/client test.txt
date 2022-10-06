@@ -1,0 +1,1 @@
+python -m websockets ws://localhost:8765/
