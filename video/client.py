@@ -3,7 +3,7 @@ import websockets
 import cv2
 import numpy as np
 
-SERVER_IP = "ws://192.168.1.28:8764"
+SERVER_IP = "ws://192.168.0.69:8764"
 
 
 async def connection():

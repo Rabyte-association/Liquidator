@@ -3,7 +3,7 @@ import websockets
 import acapture
 import cv2
 
-SERVER_IP = "192.168.1.28"
+SERVER_IP = "192.168.0.5"
 SERVER_PORT = 8764
 
 FRAMERATE = 0.0001  # [ t -> 0 ] = faster
