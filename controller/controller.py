@@ -1,10 +1,4 @@
-#
-#   Xbox360 to Python
-#   @lospedros7
-#
-
 import signal
-import asyncio
 from xbox360controller import Xbox360Controller
 
 
@@ -96,57 +90,46 @@ class Pad:
         print('triggerL: val: ' + str(self.axisTL.value))
         print('triggerR: val: ' + str(self.axisTR.value))
 
+    def on_button_pressed(self, button):  # event button press
+        self.Update(button)
 
-# object with buttons and axes data
-global pad
-pad = Pad()
+    def on_button_released(self, button):  # event button release
+        self.Update(button)
 
+    def on_axis_moved(self, axis):  # event axis move
+        self.Update(axis)
 
-def on_button_pressed(button):  # event button press
-    pad.Update(button)
+    def Initialize(self):
+        try:
+            with Xbox360Controller(0, axis_threshold=0) as controller:
+                # Buttons events init
+                controller.button_a.when_pressed = self.on_button_pressed
+                controller.button_a.when_released = self.on_button_released
 
+                controller.button_b.when_pressed = self.on_button_pressed
+                controller.button_b.when_released = self.on_button_released
+                controller.button_y.when_pressed = self.on_button_pressed
+                controller.button_y.when_released = self.on_button_released
+                controller.button_x.when_pressed = self.on_button_pressed
+                controller.button_x.when_released = self.on_button_released
+                controller.button_thumb_l.when_pressed = self.on_button_pressed
+                controller.button_thumb_l.when_released = self.on_button_released
+                controller.button_thumb_r.when_pressed = self.on_button_pressed
+                controller.button_thumb_r.when_released = self.on_button_released
+                controller.button_trigger_l.when_pressed = self.on_button_pressed
+                controller.button_trigger_l.when_released = self.on_button_released
+                controller.button_trigger_r.when_pressed = self.on_button_pressed
+                controller.button_trigger_r.when_released = self.on_button_released
+                # axes move events init
+                controller.axis_l.when_moved = self.on_axis_moved
+                controller.axis_r.when_moved = self.on_axis_moved
+                controller.trigger_l.when_moved = self.on_axis_moved
+                controller.trigger_r.when_moved = self.on_axis_moved
+                controller.hat.when_moved = self.on_axis_moved
 
-def on_button_released(button):  # event button release
-    pad.Update(button)
-
-
-def on_axis_moved(axis):  # event axis move
-    pad.Update(axis)
-
-
-# gamepad init
-async def Initialize():
-    try:
-        with Xbox360Controller(0, axis_threshold=0) as controller:
-            # Buttons events init
-            controller.button_a.when_pressed = on_button_pressed
-            controller.button_a.when_released = on_button_released
-
-            controller.button_b.when_pressed = on_button_pressed
-            controller.button_b.when_released = on_button_released
-            controller.button_y.when_pressed = on_button_pressed
-            controller.button_y.when_released = on_button_released
-            controller.button_x.when_pressed = on_button_pressed
-            controller.button_x.when_released = on_button_released
-            controller.button_thumb_l.when_pressed = on_button_pressed
-            controller.button_thumb_l.when_released = on_button_released
-            controller.button_thumb_r.when_pressed = on_button_pressed
-            controller.button_thumb_r.when_released = on_button_released
-            controller.button_trigger_l.when_pressed = on_button_pressed
-            controller.button_trigger_l.when_released = on_button_released
-            controller.button_trigger_r.when_pressed = on_button_pressed
-            controller.button_trigger_r.when_released = on_button_released
-            # axes move events init
-            controller.axis_l.when_moved = on_axis_moved
-            controller.axis_r.when_moved = on_axis_moved
-            controller.trigger_l.when_moved = on_axis_moved
-            controller.trigger_r.when_moved = on_axis_moved
-            controller.hat.when_moved = on_axis_moved
-
-            # rumble when initialization complete
-            if controller.has_rumble:
-                controller.set_rumble(0.8, 0.8, 200)
-                await asyncio.sleep(0.5)
-            signal.pause()
-    except KeyboardInterrupt:
-        pass
+                # rumble when initialization complete
+                if controller.has_rumble:
+                    controller.set_rumble(0, 1, 200)
+                signal.pause()
+        except KeyboardInterrupt:
+            pass
