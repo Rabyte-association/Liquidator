@@ -1,6 +1,9 @@
-/*
-  Further information on https://github.com/bipropellant
-*/
+// Further information on https://github.com/bipropellant
+//
+// To run this code you need this liblary: https://github.com/bipropellant/bipropellant-hoverboard-api
+// but, to install this lib, you also need this one: https://github.com/bipropellant/bipropellant-protocol
+// I recomed just copying the .c nad .h files form protocol lib, to api lib, then copying the whole folder 
+// into your aeduino libs folder.
 
 #include <HoverboardAPI.h>
 
