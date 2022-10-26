@@ -2,7 +2,7 @@
 //
 // To run this code you need this liblary: https://github.com/bipropellant/bipropellant-hoverboard-api
 // but, to install this lib, you also need this one: https://github.com/bipropellant/bipropellant-protocol
-// I recomed just copying the .c nad .h files form protocol lib, to api lib, then copying the whole folder 
+// I recomed just copying the .c nad .h files form protocol lib, to api lib, then copying the whole folder
 // into your aeduino libs folder.
 
 #include <HoverboardAPI.h>
@@ -12,8 +12,10 @@ int serialWrapper(unsigned char *data, int len) {
 }
 HoverboardAPI hoverboard = HoverboardAPI(serialWrapper);
 
-int movement = 0;
-int turn = 0;
+float movement = 0;
+float turn = 0;
+float movement_current;
+float a;
 
 void setup() {
   Serial1.begin(115200);
@@ -31,8 +33,24 @@ void loop() {
       turn = Serial.parseInt();
     }
     Serial.println(data);
+    if (data == 'p') {
+      a = Serial.parseFloat();
+    }
   }
+
+  if (movement - movement_current > 0) {
+    //    movement_current += a * 1/sqrt(abs(movement - movement_current));
+    movement_current += a * 1 / (movement - movement_current);
+  }
+  if (movement - movement_current < 0) {
+
+    //    movement_current += -a * 1/sqrt(abs(movement - movement_current));
+    movement_current += -a * 1 / (movement - movement_current);
+  }
+
   Serial.print(movement);
-  Serial.println(turn);
-  hoverboard.sendPWM(-movement, turn, PROTOCOL_SOM_NOACK);
+  Serial.print(", ");
+  Serial.println(movement_current);
+  hoverboard.sendPWM(movement_current, turn, PROTOCOL_SOM_NOACK);
+  delay(10);
 }
