@@ -1,13 +1,13 @@
 import signal
 from xbox360controller import Xbox360Controller
 
+#Controller translator magic class by LosPedros
 
 class Axis1:
     value = 0
 
     def __init__(self, a):
         self.value = a
-
 
 class Axis2:
     x = 0
@@ -60,7 +60,7 @@ class Pad:
             self.leftAxis.y = round(element.y, 3)
         if name == "axis_r":
             self.rightAxis.x = round(element.x, 3)
-            self.rightAxis.y = round(element.y, 3)
+            self.rightAxis.y = round(element.y, 3) #specjalnie zmienione, przy padzie po BT te osie byly odwrocoe
         if name == "trigger_l":
             self.axisTL.value = round(element.value, 3)
         if name == "trigger_r":

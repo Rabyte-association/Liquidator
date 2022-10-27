@@ -32,18 +32,18 @@ def on_button_released(button):
 
 
 def on_axis_moved(axis):
-    #print(f'Axis {axis.name} moved to {axis.x} {axis.y}')
+    print(f'Axis {axis.name} moved to {axis.x} {axis.y}')
     print(axis.x)
-    print(controller.info)
+   # print(controller.info)
 def on_trigger_moved(trigger):
     print(trigger.value)
 
 try:
-    with Xbox360Controller(0, axis_threshold=0.2) as controller:
+    with Xbox360Controller(0, axis_threshold=0) as controller:
         # Button A events
         controller.button_a.when_pressed = on_button_pressed
         controller.button_a.when_released = on_button_released
-        print(controller)
+       # print(controller)
         controller.button_b.when_pressed = on_button_pressed
         controller.button_b.when_released = on_button_released
         controller.button_y.when_pressed = on_button_pressed
