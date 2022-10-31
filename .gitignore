@@ -1,2 +1,8 @@
 .venv/
 lenv/
+controller/test.py
+/__pychache__/
+Comms/__pycache__/encode.cpython-310.pyc
+controller/__pycache__/controller.cpython-310.pyc
+controller/__pycache__/emergencybutton.cpython-310.pyc
+controller/__pycache__/windowsController.cpython-310.pyc
