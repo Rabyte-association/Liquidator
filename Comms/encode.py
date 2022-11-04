@@ -19,33 +19,22 @@ class Struct:
     motorX1 = 0         #chwytak
     motorX2 = 0
     homing = 0          #powrót do domu osi na robocie
-    
-
-
+    cameraAngle = 0
     ledRGB = [255, 128, 64]
-
+    
     def __bytes__(self):
         return
 
-    def Print(self):
-        print("motorY: " + str(self.motorY) +" motorZ: " + str(self.motorZ))
-        print("HVB: speed:" + str(self.HVB.speed) + " d:" + str(self.HVB.direction))
-        print("ledRGB: " + str(self.ledRGB))
+
+def EncPrint(data):
+    print("motorY: " + str(data.motorY) +" motorZ: " + str(data.motorZ))
+    print("HVB: speed:" + str(data.HVB.speed) + " d:" + str(data.HVB.direction))
+    print("ledRGB: " + str(data.ledRGB))
 
 
-def Encode(struct):
-    return pickle.dumps(struct)
+def Encode():
+    return pickle.dumps(Struct)
 
 
 def Decode(stream):
     return pickle.loads(stream)
-
-
-struct = Struct()
-struct.Print()
-
-stream = Encode(struct)
-print(stream)
-
-new = Decode(stream)
-print(new.motorY)
