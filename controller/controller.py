@@ -20,41 +20,44 @@ class Axis2:
 
 # gamepad object class
 class Pad:
-    button_A = False
-    button_B = False
-    button_X = False
-    button_Y = False
-    button_ThL = False
-    button_ThR = False
-    button_TR = False
-    button_TL = False
+    button_A = 0
+    button_B = 0
+    button_X = 0
+    button_Y = 0
+    button_ThL = 0
+    button_ThR = 0
+    button_TR = 0
+    button_TL = 0
+    buttonStart = 0
 
-    axisTL = Axis1(0)
-    axisTR = Axis1(0)
+    axisTL = 0
+    axisTR = 0
     hatAxis = Axis2(0, 0)
     leftAxis = Axis2(0, 0)
     rightAxis = Axis2(0, 0)
 
     # updates controller object on every event
+
     def Update(self, element):
         name = element.name
         if name == "button_a":
-            self.button_A = not self.button_A
+            self.button_A = 1*element._value
         if name == "button_b":
-            self.button_B = not self.button_B
+            self.button_B = 1*element._value
         if name == "button_x":
-            self.button_X = not self.button_X
+            self.button_X = 1*element._value
         if name == "button_y":
-            self.button_Y = not self.button_Y
+            self.button_Y = 1*element._value
         if name == "button_thumb_l":
-            self.button_ThL = not self.button_ThL
+            self.button_ThL = 1*element._value
         if name == "button_thumb_r":
-            self.button_ThR = not self.button_ThR
+            self.button_ThR = 1*element._value
         if name == "button_trigger_l":
-            self.button_TL = not self.button_TL
+            self.button_TL = 1*element._value
         if name == "button_trigger_r":
-            self.button_TR = not self.button_TR
-
+            self.button_TR = 1*element._value
+        if name == "button_start":
+            self.buttonStart = 1*element._value
         if name == "axis_l":
             self.leftAxis.x = round(element.x, 3)
             self.leftAxis.y = round(element.y, 3)
@@ -62,34 +65,34 @@ class Pad:
             self.rightAxis.x = round(element.x, 3)
             self.rightAxis.y = round(element.y, 3) #specjalnie zmienione, przy padzie po BT te osie byly odwrocoe
         if name == "trigger_l":
-            self.axisTL.value = round(element.value, 3)
+            self.axisTL = round(element.value, 3)
         if name == "trigger_r":
-            self.axisTR.value = round(element.value, 3)
+            self.axisTR = round(element.value, 3)
         if name == "hat":
             self.hatAxis.x = round(element.x, 3)
             self.hatAxis.y = round(element.y, 3)
 
     # prints debug informations
-    def ShowDebug(self):
-        print('Pad Object: ')
-        print('btnA: ' + str(self.button_A))
-        print('btnB: ' + str(self.button_B))
-        print('btnX: ' + str(self.button_X))
-        print('btnY: ' + str(self.button_Y))
-        print('btnThL: ' + str(self.button_ThL))
-        print('btnThR: ' + str(self.button_ThR))
-        print('btnTL: ' + str(self.button_TL))
-        print('btnTR: ' + str(self.button_TR))
+    # def ShowDebug(self):
+    #     print('Pad Object: ')
+    #     print('btnA: ' + str(self.button_A))
+    #     print('btnB: ' + str(self.button_B))
+    #     print('btnX: ' + str(self.button_X))
+    #     print('btnY: ' + str(self.button_Y))
+    #     print('btnThL: ' + str(self.button_ThL))
+    #     print('btnThR: ' + str(self.button_ThR))
+    #     print('btnTL: ' + str(self.button_TL))
+    #     print('btnTR: ' + str(self.button_TR))
 
-        print('leftAxis: x: ' + str(self.leftAxis.x) +
-              ' y: ' + str(self.leftAxis.y))
-        print('rigthAxis: x: ' + str(self.rightAxis.x) +
-              ' y: ' + str(self.rightAxis.y))
-        print('hat: x: ' + str(self.hatAxis.x) +
-              ' y: ' + str(self.hatAxis.y))
-        print('triggerL: val: ' + str(self.axisTL.value))
-        print('triggerR: val: ' + str(self.axisTR.value))
-
+    #     print('leftAxis: x: ' + str(self.leftAxis.x) +
+    #           ' y: ' + str(self.leftAxis.y))
+    #     print('rigthAxis: x: ' + str(self.rightAxis.x) +
+    #           ' y: ' + str(self.rightAxis.y))
+    #     print('hat: x: ' + str(self.hatAxis.x) +
+    #           ' y: ' + str(self.hatAxis.y))
+    #     print('triggerL: val: ' + str(self.axisTL.value))
+    #     print('triggerR: val: ' + str(self.axisTR.value))
+    
     def on_button_pressed(self, button):  # event button press
         self.Update(button)
 
@@ -105,7 +108,8 @@ class Pad:
                 # Buttons events init
                 controller.button_a.when_pressed = self.on_button_pressed
                 controller.button_a.when_released = self.on_button_released
-
+                controller.button_start.when_pressed = self.on_button_pressed
+                controller.button_start.when_released = self.on_button_released
                 controller.button_b.when_pressed = self.on_button_pressed
                 controller.button_b.when_released = self.on_button_released
                 controller.button_y.when_pressed = self.on_button_pressed
@@ -126,6 +130,7 @@ class Pad:
                 controller.trigger_l.when_moved = self.on_axis_moved
                 controller.trigger_r.when_moved = self.on_axis_moved
                 controller.hat.when_moved = self.on_axis_moved
+                
 
                 # rumble when initialization complete
                 if controller.has_rumble:
