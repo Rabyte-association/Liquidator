@@ -1,4 +1,3 @@
-import time
 import pickle
 from time import sleep
 from serial import Serial

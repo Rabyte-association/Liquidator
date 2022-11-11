@@ -1,10 +1,9 @@
-import pickle
 from controller import controller
 import threading
 from time import sleep
-from Comms import client
-#Enkodowanie danych po stronie sterującego
+from controller import Wirelesscontroller
 
+#Enkodowanie danych po stronie sterującego
 
 class Struct:
     HVB_ARM = 0  #przekaźnik zasilania hvb, zmiana chwilowa
@@ -27,34 +26,35 @@ class Struct:
 
 Data = Struct()
 
-pad = controller.Pad()
-MAX_VEL = -400
+MAX_VEL = 400
 MAX_DIR = 200
 
+#pad= controller.Pad()
+pad = Wirelesscontroller.Pad()
 
-def Initialize():
+def Initialize(ControllerType):
     controllerThread = threading.Thread(target = pad.Initialize)
     controllerThread.start()
     while True:
         Data.homing = pad.button_Y 
         Data.hvbDir = pad.leftAxis.x * MAX_DIR
         Data.hvbSpeed = pad.leftAxis.y * MAX_VEL
-        Data.motorY = -pad.rightAxis.y
-        Data.motorZ = -pad.rightAxis.x
-        Data.HVB_ARM = pad.buttonStart
+        Data.motorY = pad.rightAxis.y
+        Data.motorZ = pad.rightAxis.x
+        Data.HVB_ARM = pad.buttonSelect
         Data.stop = pad.button_X
-        if pad.axisTR>0:
-            Data.motorX1 = pad.axisTR
+        if pad.axisTR==1:
+            Data.motorX1 = 1
             pass
-        elif pad.button_TR > 0:
+        elif pad.button_TR == 1:
             Data.motorX1 = -1
         else:
             Data.motorX1 = 0
 
-        if pad.axisTL>0:
-            Data.motorX2 = pad.axisTL
+        if pad.axisTL ==1:
+            Data.motorX2 = 1
             pass
-        elif pad.button_TL > 0:
+        elif pad.button_TL ==1:
             Data.motorX2 = -1
         else:
            Data.motorX2 = 0

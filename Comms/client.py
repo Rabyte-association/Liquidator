@@ -1,9 +1,8 @@
 import socket
-import pickle
 from time import sleep
 
 
-HOST = 'localhost'    # The remote host
+HOST = '192.168.0.40'    # The remote host
 PORT = 8766             # The same port as used by the server
 global data
 data = '0'

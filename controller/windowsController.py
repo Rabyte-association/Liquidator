@@ -11,7 +11,7 @@ class Axis2:
         self.y = b
 
 
-class XboxController(object):
+class XboxController():
     MAX_TRIG_VAL =  math.pow(2, 8)
     MAX_JOY_VAL =  math.pow(2, 15)
 
@@ -80,3 +80,7 @@ class XboxController(object):
                         self.hatAxis.y = event.state
                     elif event.code == 'BTN_TRIGGER_HAPPY4':
                         self.hatAxis.y = event.state
+                print(pad.rightAxis.y)
+
+pad = XboxController()
+pad.Initialize()
