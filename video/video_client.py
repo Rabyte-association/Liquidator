@@ -16,9 +16,16 @@ class Stream():
     alive = True
 
     def Initialize(self):
+        print('camera connected to: ' + str(self.host) + ' : ' + str(self.port))
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        clientsocket.connect((self.host, self.port))
-
+        
+        while True:
+            try:
+                clientsocket.connect((self.host, self.port))
+                break
+            except:
+                print('server conneting error... ')
+        
         data = b''
         payload_size = struct.calcsize("L")
 
@@ -40,7 +47,7 @@ class Stream():
                 frame_data = data[:msg_size]
                 data = data[msg_size:]
             except:
-                print('error')
+                print('recv error')
                 break
 
             # Extract frame
@@ -51,10 +58,10 @@ class Stream():
 
 BASE_PORT = 8200
 
-def Initialize(camera_index, server_ip):
-    stream = [Stream() for i in range(len(camera_index))]
+def Initialize(camera_quantity, server_ip):
+    stream = [Stream() for i in range(camera_quantity)]
     thread = []
-    for i in range(len(camera_index)):  # creating threads
+    for i in range(camera_quantity):  # creating threads
         stream[i].port = BASE_PORT + i
         stream[i].host = server_ip
 

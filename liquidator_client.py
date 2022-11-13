@@ -7,8 +7,6 @@ from controller import emergencybutton
 from video import video_client
 
 thread_video = threading.Thread(
-    target=video_client.Initialize, args=[[0], 'raspi']) # jako argumenty kolejno indeksy kamer w tablicy i ip serwera
-
-
+    target=video_client.Initialize, args=[1, '']) # jako argumenty kolejno ilość kamer i ip serwera
 
 thread_video.start()
