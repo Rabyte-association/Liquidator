@@ -1,6 +1,7 @@
 from inputs import get_gamepad
 import math
-
+import threading
+from time import sleep
 
 class Axis2:
     x = 0
@@ -11,8 +12,8 @@ class Axis2:
         self.y = b
 
 
-class XboxController():
-    MAX_TRIG_VAL =  math.pow(2, 8)
+class Pad():
+    MAX_TRIG_VAL =  math.pow(2, 10)
     MAX_JOY_VAL =  math.pow(2, 15)
 
     leftAxis = Axis2(0, 0)
@@ -25,14 +26,37 @@ class XboxController():
     button_X = 0
     button_Y = 0
     button_B = 0
-    ThL = 0
-    ThR = 0
-    Back = 0
-    Start = 0
+    buttonSelect = 0
+    buttonStart = 0
+    button_ThL = 0
+    button_ThR = 0
+    buttonSelect = 0
+    buttonStart = 0
     hatAxis = Axis2(0, 0)
+    hatUP = 0
 
     def ShowDebug(self):
-        print(self.button_A, self.button_B, self.Back, self.leftAxis.x, self.hatAxis.y)
+        print('Pad Object: ')
+        print('btnA: ' + str(self.button_A))
+        print('btnB: ' + str(self.button_B))
+        print('btnX: ' + str(self.button_X))
+        print('btnY: ' + str(self.button_Y))
+        print('btnStart: ' + str(self.buttonStart))
+        print('btnSel: ' + str(self.buttonSelect))
+        print('btnThL: ' + str(self.button_ThL))
+        print('btnThR: ' + str(self.button_ThR))
+        print('btnTL: ' + str(self.button_TL))
+        print('btnTR: ' + str(self.button_TR))
+
+        print('leftAxis: x: ' + str(self.leftAxis.x) +
+              ' y: ' + str(self.leftAxis.y))
+        print('rigthAxis: x: ' + str(self.rightAxis.x) +
+              ' y: ' + str(self.rightAxis.y))
+        print('hat: x: ' + str(self.hatAxis.x) +
+              ' y: ' + str(self.hatAxis.y))
+        print('triggerL: val: ' + str(self.axisTL))
+        print('triggerR: val: ' + str(self.axisTR))
+    
     
     def Initialize(self):
             while True:
@@ -40,18 +64,18 @@ class XboxController():
                 for event in events:
                     if event.code == 'ABS_Y':
                         # normalize between -1 and 1
-                        self.leftAxis.y = round(event.state / XboxController.MAX_JOY_VAL, 4)
+                        self.leftAxis.y = round(event.state / self.MAX_JOY_VAL, 4)
                     elif event.code == 'ABS_X':
                         # normalize between -1 and 1
-                        self.leftAxis.x = round(event.state / XboxController.MAX_JOY_VAL, 4)
+                        self.leftAxis.x = round(event.state / self.MAX_JOY_VAL, 4)
                     elif event.code == 'ABS_RY':
-                        self.rightAxis.y =round(event.state/XboxController.MAX_JOY_VAL,4)  # normalize between -1 and 1
+                        self.rightAxis.y =round(event.state/self.MAX_JOY_VAL,4)  # normalize between -1 and 1
                     elif event.code == 'ABS_RX':
-                        self.rightAxis.x = round(event.state /XboxController.MAX_JOY_VAL,4)  # normalize between -1 and 1
+                        self.rightAxis.x = round(event.state /self.MAX_JOY_VAL,4)  # normalize between -1 and 1
                     elif event.code == 'ABS_Z':
-                        self.axisTL = round(event.state /XboxController.MAX_TRIG_VAL,4)  # normalize between 0 and 1
+                        self.axisTL = round(event.state /self.MAX_TRIG_VAL,4)  # normalize between 0 and 1
                     elif event.code == 'ABS_RZ':
-                        self.axisTR = round(event.state / XboxController.MAX_TRIG_VAL,4)  # normalize between 0 and 1
+                        self.axisTR = round(event.state / self.MAX_TRIG_VAL,4)  # normalize between 0 and 1
                     elif event.code == 'BTN_TL':
                         self.button_TL = event.state
                     elif event.code == 'BTN_TR':
@@ -59,28 +83,25 @@ class XboxController():
                     elif event.code == 'BTN_SOUTH':
                         self.button_A = event.state
                     elif event.code == 'BTN_NORTH':
-                        self.button_Y = event.state  # previously switched with X
+                        self.button_X = event.state  # previously switched with X
                     elif event.code == 'BTN_WEST':
-                        self.button_X = event.state  # previously switched with Y
+                        self.button_Y = event.state  # previously switched with Y
                     elif event.code == 'BTN_EAST':
                         self.button_B = event.state
                     elif event.code == 'BTN_THUMBL':
-                        self.ThL = event.state
+                        self.button_ThL = event.state
                     elif event.code == 'BTN_THUMBR':
-                        self.ThR = event.state
+                        self.button_ThR = event.state
                     elif event.code == 'BTN_SELECT':
-                        self.Back = event.state
+                        self.buttonSelect = event.state
                     elif event.code == 'BTN_START':
-                        self.Start = event.state
+                        self.buttonStart = event.state
                     elif event.code == 'BTN_TRIGGER_HAPPY1':
-                        self.hatAxis.x = event.state
+                       self.hatUP = event.state
                     elif event.code == 'BTN_TRIGGER_HAPPY2':
-                        self.hatAxis.x = event.state
+                        self.hatUP = event.state
                     elif event.code == 'BTN_TRIGGER_HAPPY3':
                         self.hatAxis.y = event.state
                     elif event.code == 'BTN_TRIGGER_HAPPY4':
                         self.hatAxis.y = event.state
-                print(pad.rightAxis.y)
 
-pad = XboxController()
-pad.Initialize()

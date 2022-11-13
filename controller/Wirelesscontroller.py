@@ -36,6 +36,7 @@ class Pad:
     axisTR = 0
     hatAxis = Axis2(0, 0)
     leftAxis = Axis2(0, 0)
+    rawy = 0
     rightAxis = Axis2(0, 0)
 
     # updates controller object on every event
@@ -105,7 +106,6 @@ class Pad:
         print('btnTL: ' + str(self.button_TL))
         print('btnTR: ' + str(self.button_TR))
         print('btnSel: ' + str(self.buttonSelect))
-        print('btnMD: ' + str(self.buttonMode))
         print('btnStart: ' + str(self.buttonStart))
         print('leftAxis: x: ' + str(self.leftAxis.x) +
             ' y: ' + str(self.leftAxis.y))

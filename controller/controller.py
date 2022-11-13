@@ -29,6 +29,7 @@ class Pad:
     button_TR = 0
     button_TL = 0
     buttonStart = 0
+    buttonSelect = 0
 
     axisTL = 0
     axisTR = 0
@@ -48,6 +49,10 @@ class Pad:
             self.button_X = 1*element._value
         if name == "button_y":
             self.button_Y = 1*element._value
+        if name == "button_start":
+            self.buttonStart = 1*element._value
+        if name == "button_select":
+            self.buttonSelect = 1*element._value
         if name == "button_thumb_l":
             self.button_ThL = 1*element._value
         if name == "button_thumb_r":
@@ -79,6 +84,8 @@ class Pad:
         print('btnB: ' + str(self.button_B))
         print('btnX: ' + str(self.button_X))
         print('btnY: ' + str(self.button_Y))
+        print('btnStart: ' + str(self.buttonStart))
+        print('btnSel: ' + str(self.buttonSelect))
         print('btnThL: ' + str(self.button_ThL))
         print('btnThR: ' + str(self.button_ThR))
         print('btnTL: ' + str(self.button_TL))
