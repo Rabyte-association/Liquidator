@@ -9,3 +9,4 @@ controller/__pycache__/windowsController.cpython-310.pyc
 video/__pycache__/
 __pycache__
 .vscode
+/pico/pico_serial/build
