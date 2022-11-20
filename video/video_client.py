@@ -28,22 +28,29 @@ class Stream():
         
         data = b''
         payload_size = struct.calcsize("L")
+        print('b')
 
         while True:
 
-            # Retrieve message size
+            # Retrieve message sizeprnt
+            print('w')
             try:
+                print('we')
                 while len(data) < payload_size:
                     data += clientsocket.recv(4096)
-
+                
+                print('e')
                 packed_msg_size = data[:payload_size]
                 data = data[payload_size:]
                 msg_size = struct.unpack("L", packed_msg_size)[0]
 
                 # Retrieve all data based on message size
+                print('y')
                 while len(data) < msg_size:
                     data += clientsocket.recv(4096)
+                    print('wk')
 
+                print('p')
                 frame_data = data[:msg_size]
                 data = data[msg_size:]
             except:
@@ -51,7 +58,9 @@ class Stream():
                 break
 
             # Extract frame
+            print('d')
             self.frame = pickle.loads(frame_data)
+            print(self.frame, "lol")
 
             if not self.alive:
                 break

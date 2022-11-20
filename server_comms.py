@@ -4,7 +4,7 @@ import threading
 from Comms import decode_server
 from Comms import server
 
-PORT = 8767
+
 
 def dataHandler():
     while True:

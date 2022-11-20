@@ -4,7 +4,7 @@ import cv2
 url = "https://en.wikipedia.org/wiki/List_of_common_resolutions"
 table = pd.read_html(url)[0]
 table.columns = table.columns.droplevel()
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 resolutions = {}
 for index, row in table[["W", "H"]].iterrows():
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, row["W"])

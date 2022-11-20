@@ -33,6 +33,8 @@ MAX_VEL = 300       #w jednostkach hoverboarda
 NORM_VEL = 150
 MIN_VEL = 40
 MAX_DIR = 100
+MIN_DIR = 20
+rightDeadZone = 0.2
 
 def Initialize():
     controllerThread = threading.Thread(target = pad.Initialize)
@@ -43,21 +45,32 @@ def Initialize():
                 if abs(pad.leftAxis.y * NORM_VEL) < MIN_VEL:
                     Data.hvbSpeed = 0
                 else:
-                    Data.hvbSpeed = pad.leftAxis.y * NORM_VEL
+                    Data.hvbSpeed = pad.leftAxis.y *- NORM_VEL
             else:
                 if abs(pad.leftAxis.y * MAX_VEL) < MIN_VEL:
                     Data.hvbSpeed = 0
                 else:
-                    Data.hvbSpeed = pad.leftAxis.y * MAX_VEL
-            Data.hvbDir = pad.leftAxis.x * MAX_DIR
+                    Data.hvbSpeed = pad.leftAxis.y * -MAX_VEL
+            if abs(pad.leftAxis.x * MAX_DIR) < MIN_DIR:
+                Data.hvbDir = 0
+            else:
+                Data.hvbDir = pad.leftAxis.x *MAX_DIR
+            #print(Data.hvbSpeed)
             Data.HVB_ARM = pad.buttonStart                      #przekaźnik 
             Data.led = pad.buttonSelect
             Data.endstopOvr = pad.button_Y
             Data.homing = pad.button_A
-            Data.motorY = pad.rightAxis.x
-            Data.motorZ = pad.rightAxis.y
+            if abs(pad.rightAxis.x) > rightDeadZone:
+                Data.motorY = pad.rightAxis.x
+            else:
+                Data.motorY = 0
+            if abs(pad.rightAxis.y)>rightDeadZone:
+                    Data.motorZ = pad.rightAxis.y
+            else:
+                Data.motorZ = 0
             Data.motorX1 = pad.axisTR - pad.button_TR        
             Data.motorX2 = pad.axisTL - pad.button_TL           #jak się nacisnie oba na raz, nic się nie dzieje
+            
         else:   
             Data.hvbDir = 0
             Data.hvbSpeed = 0

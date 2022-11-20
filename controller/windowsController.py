@@ -64,18 +64,18 @@ class Pad():
                 for event in events:
                     if event.code == 'ABS_Y':
                         # normalize between -1 and 1
-                        self.leftAxis.y = round(event.state / self.MAX_JOY_VAL, 4)
+                        self.leftAxis.y = round(event.state / self.MAX_JOY_VAL, 3)
                     elif event.code == 'ABS_X':
                         # normalize between -1 and 1
-                        self.leftAxis.x = round(event.state / self.MAX_JOY_VAL, 4)
+                        self.leftAxis.x = round(event.state / self.MAX_JOY_VAL, 3)
                     elif event.code == 'ABS_RY':
-                        self.rightAxis.y =round(event.state/self.MAX_JOY_VAL,4)  # normalize between -1 and 1
+                        self.rightAxis.y =round(event.state/self.MAX_JOY_VAL,3)  # normalize between -1 and 1
                     elif event.code == 'ABS_RX':
-                        self.rightAxis.x = round(event.state /self.MAX_JOY_VAL,4)  # normalize between -1 and 1
+                        self.rightAxis.x = round(event.state /self.MAX_JOY_VAL,3)  # normalize between -1 and 1
                     elif event.code == 'ABS_Z':
-                        self.axisTL = round(event.state /self.MAX_TRIG_VAL,4)  # normalize between 0 and 1
+                        self.axisTL = round(event.state /self.MAX_TRIG_VAL,3)  # normalize between 0 and 1
                     elif event.code == 'ABS_RZ':
-                        self.axisTR = round(event.state / self.MAX_TRIG_VAL,4)  # normalize between 0 and 1
+                        self.axisTR = round(event.state / self.MAX_TRIG_VAL,3)  # normalize between 0 and 1
                     elif event.code == 'BTN_TL':
                         self.button_TL = event.state
                     elif event.code == 'BTN_TR':

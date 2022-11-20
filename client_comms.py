@@ -10,7 +10,6 @@ from Comms import client
 def dataHandler():
     while True:
         client.data = pickle.dumps(encode.Data)         #ta jendna linijka odpowiedzialna jest za dzialanie caleego systemu ;)
-
         
 def Initialize(SERVER_PORT, SERVER_IP):
     thread_encode = threading.Thread(target=encode.Initialize)
