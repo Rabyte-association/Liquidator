@@ -16,11 +16,13 @@ CytronMD motorB(PWM_PWM, 22, 26);
 
 int speedY = 0;
 int speedZ = 0;
-float speedA = 0;
-float speedB = 0;
+int speedA = 0;
+int speedB = 0;
 
 bool relay = false;
 bool led = false;
+
+unsigned long datatime;
 
 void setup() {
   Serial.begin(115200);
@@ -36,16 +38,16 @@ void loop() {
 
     byte data = Serial.read();
     if (data == 'y') {
-      speedY = Serial.parseInt() * 255;
+      speedY = Serial.parseFloat()*255;
     }
     if (data == 'z') {
-      speedZ = Serial.parseInt() * 255;
+      speedZ = Serial.parseFloat() * 255;
     }
     if (data == 'h') {
-      relay = !relay;
+      relay = Serial.parseInt();
     }
     if (data == 'l') {
-      led = !led;
+      led = Serial.parseInt();
     }
     if (data == 'a') {
       speedA = Serial.parseFloat()*255;
@@ -53,6 +55,13 @@ void loop() {
     if (data == 'b') {
       speedB = Serial.parseFloat()*255;
     }
+    datatime = millis();
+  }
+  if(millis() - datatime >= 1000){
+    speedY = 0;
+    speedZ = 0;
+    speedA = 0;
+    speedB = 0;    
   }
   digitalWrite(hvb_relay, relay);
   digitalWrite(led_relay, led);
@@ -62,6 +71,6 @@ void loop() {
 
   motorA.setSpeed(speedA);
   motorB.setSpeed(speedB);
-  
-  // Serial.println(speedB);    // debug
+  Serial.println(speedA);    // debug
+  // delay(1);
 }

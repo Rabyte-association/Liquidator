@@ -25,6 +25,8 @@ bool led = false;
 bool midVal = false;
 bool reset = LOW;
 
+unsigned long datatime;
+
 
 void setup() {
   Serial.begin(115200);
@@ -62,8 +64,17 @@ void loop() {
     }
     if (data == 'b') {
       speedB = Serial.parseFloat()*255;
-    }}
+    }
 
+    datatime = millis();
+  }
+  if(millis() - datatime >= 1000){
+    speedY = 0;
+    speedZ = 0;
+    speedA = 0;
+    speedB = 0;   
+    led = !led;
+  }
   digitalWrite(hvb_relay, relay);
   digitalWrite(led_relay, led);
   midVal = digitalRead(midEnd);

@@ -11,6 +11,8 @@ float turn = 0;
 float movement_current;
 float a=1; //accel/decel speed  <10 
 
+unsigned long datatime;
+
 void setup() {
   Serial1.begin(115200);
   Serial.begin(115200);
@@ -26,6 +28,8 @@ void loop() {
     if (data == 'b') {
       turn = Serial.parseInt();
     }
+
+    datatime = millis();
   }
 
 //  if (movement - movement_current > 0) {
@@ -48,5 +52,9 @@ void loop() {
 //  Serial.print(" ");
 //  Serial.println(movement_current);
 //  hoverboard.sendPWM(movement_current, turn, PROTOCOL_SOM_NOACK);
+  if(millis() - datatime >= 1000){
+    movement = 0;
+    turn = 0;
+  }
   hoverboard.sendPWM(movement, turn, PROTOCOL_SOM_NOACK);
 }
