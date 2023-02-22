@@ -29,10 +29,11 @@ Data = Struct()
 #pad = Wirelesscontroller.Pad() #[*] rip
 pad = windowsController.Pad()
 
-MAX_VEL = 300       #w jednostkach hoverboarda
-NORM_VEL = 150
+MAX_VEL = 350       #w jednostkach hoverboarda
+NORM_VEL = 200
 MIN_VEL = 40
-MAX_DIR = 100
+NORM_DIR = 100
+MAX_DIR = 200
 MIN_DIR = 20
 rightDeadZone = 0.2
 
@@ -46,15 +47,19 @@ def Initialize():
                     Data.hvbSpeed = 0
                 else:
                     Data.hvbSpeed = pad.leftAxis.y *- NORM_VEL
+                if abs(pad.leftAxis.x * NORM_DIR) < MIN_DIR:
+                    Data.hvbDir = 0
+                else:
+                    Data.hvbDir = pad.leftAxis.x *NORM_DIR
             else:
                 if abs(pad.leftAxis.y * MAX_VEL) < MIN_VEL:
                     Data.hvbSpeed = 0
                 else:
                     Data.hvbSpeed = pad.leftAxis.y * -MAX_VEL
-            if abs(pad.leftAxis.x * MAX_DIR) < MIN_DIR:
-                Data.hvbDir = 0
-            else:
-                Data.hvbDir = pad.leftAxis.x *MAX_DIR
+                if abs(pad.leftAxis.x * MAX_DIR) < MIN_DIR:
+                    Data.hvbDir = 0
+                else:
+                    Data.hvbDir = pad.leftAxis.x *MAX_DIR
             #print(Data.hvbSpeed)
             Data.HVB_ARM = pad.buttonStart                      #przekaźnik 
             Data.led = pad.buttonSelect

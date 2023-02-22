@@ -3,9 +3,24 @@
 
 #include "CytronMotorDriver.h"
 
-#define hvb_relay 8   // relay used for tunrning on/off the hoverboard mainboard
-#define led_relay 9   // relay used for driving leds
-#define midEnd  13
+#include <HoverboardAPI.h>
+
+UART Serial2(12, 13, 0, 0);
+
+int serialWrapper(unsigned char *data, int len) {
+  return (int)Serial2.write(data, len);
+}
+HoverboardAPI hoverboard = HoverboardAPI(serialWrapper);
+
+float movement = 0;
+float turn = 0;
+float movement_current;
+float a = 25;  //accel/decel speed  <10
+
+
+#define hvb_relay 8  // relay used for tunrning on/off the hoverboard mainboard
+#define led_relay 9  // relay used for driving leds
+#define midEnd 13
 
 
 CytronMD motorY(PWM_DIR, 18, 19);
@@ -25,18 +40,21 @@ bool led = false;
 bool midVal = false;
 bool reset = LOW;
 
-unsigned long datatime;
+bool wheelie = false;
+// unsigned long datatime;
 
 
 void setup() {
+  // Serial1.setTX(12);
   Serial.begin(115200);
-  pinMode(25, OUTPUT);    // builtin led, status
-  digitalWrite(25, HIGH);
+  Serial2.begin(115200);
+  pinMode(25, OUTPUT);  // builtin led, status
+  // digitalWrite(25, HIGH);
   pinMode(midEnd, INPUT_PULLUP);
   pinMode(hvb_relay, OUTPUT);
   pinMode(led_relay, OUTPUT);
-//  
-//attachInterrupt(digitalPinToInterrupt(midEnd), midIntr, FALLING);
+  //
+  //attachInterrupt(digitalPinToInterrupt(midEnd), midIntr, FALLING);
 }
 
 
@@ -55,49 +73,70 @@ void loop() {
       relay = Serial.parseInt();
     }
     if (data == 'l') {
-      if(Serial.parseInt() == 1){
+      if (Serial.parseInt() == 1) {
         led = !led;
       }
     }
     if (data == 'a') {
-      speedA = Serial.parseFloat()*255;
+      speedA = Serial.parseFloat() * 255;
     }
     if (data == 'b') {
-      speedB = Serial.parseFloat()*255;
+      speedB = Serial.parseFloat() * 255;
     }
-
-    datatime = millis();
+    if (data == 'x') {
+      movement = Serial.parseInt();
+    }
+    if (data == 't') {
+      turn = Serial.parseInt();
+    }
+    if (data == 'w') {
+      wheelie = Serial.parseInt();
+    }
+    // datatime = millis();
   }
-  if(millis() - datatime >= 1000){
-    speedY = 0;
-    speedZ = 0;
-    speedA = 0;
-    speedB = 0;   
-    led = !led;
-  }
+  // if(millis() - datatime >= 1000){
+  //   speedY = 0;
+  //   speedZ = 0;
+  //   speedA = 0;
+  //   speedB = 0;
+  //   led = !led;
+  // }
   digitalWrite(hvb_relay, relay);
   digitalWrite(led_relay, led);
   midVal = digitalRead(midEnd);
 
   motorY.setSpeed(speedY);
   motorZ.setSpeed(speedZ);
-  if(midVal == LOW){
-    
-    if(speedA > 0){
-    motorA.setSpeed(0);
-    }
-    else{
+  if (midVal == LOW) {
+
+    if (speedA > 0) {
+      motorA.setSpeed(0);
+    } else {
       motorA.setSpeed(speedA);
     }
-    if(speedB>0){
+    if (speedB > 0) {
       motorB.setSpeed(0);
-    }
-    else{
+    } else {
       motorB.setSpeed(speedB);
     }
-  }
-  else{
+  } else {
     motorA.setSpeed(speedA);
     motorB.setSpeed(speedB);
   }
+  if (!wheelie) {
+    digitalWrite(25, HIGH);
+    if (movement - movement_current > 0) {
+      movement_current += a;
+    }
+    if (movement - movement_current < 0) {
+      movement_current += -a;
+    }
+    if (movement - movement_current == 0) {
+      movement_current = movement;
+    }
+  } else {
+    digitalWrite(25, LOW);
+    movement_current = movement;
+  }
+  hoverboard.sendPWM(movement_current, turn, PROTOCOL_SOM_NOACK);
 }
