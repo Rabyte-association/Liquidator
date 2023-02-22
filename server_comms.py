@@ -8,7 +8,10 @@ from Comms import server
 
 def dataHandler():
     while True:
-        decode_server.datahold.data = server.datahold.data
+        try:
+            decode_server.datahold.data = server.datahold.data
+        except:
+            print("err2")
 
 
 def Initialize(PORT):

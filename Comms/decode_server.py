@@ -21,12 +21,13 @@ class Struct:       #ten kod nic nie robi, ale jest jako podpowiedz
 class DataHold:
     data = ""
 datahold = DataHold()
-datahold.data = ""
-xiaoID = '0'
-picoID = '1'
+datahold.data = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.encode_client\x94\x8c\x06Struct\x94\x93\x94)\x81\x94}\x94(\x8c\x08hvbSpeed\x94K\x00\x8c\x06hvbDir\x94K\x00\x8c\x07HVB_ARM\x94K\x00\x8c\x03led\x94K\x00\x8c\nendstopOvr\x94K\x00\x8c\x06homing\x94K\x00\x8c\x06motorY\x94K\x00\x8c\x06motorZ\x94K\x00\x8c\x07motorX1\x94K\x00\x8c\x07motorX2\x94K\x00ub.'
+
+#xiaoID = '0'
+picoID = '0'
 def Initialize():
     serialpico = Serial(port='/dev/ttyACM'+picoID, baudrate=115200, timeout=None)
-    serialxiao = Serial(port='/dev/ttyACM'+xiaoID, baudrate=115200, timeout=0.1)
+   # serialxiao = Serial(port='/dev/ttyACM'+xiaoID, baudrate=115200, timeout=0.1)
     while True:
         if len(datahold.data)>2:
             try:
@@ -37,9 +38,8 @@ def Initialize():
                 serialpico.write(bytes('b' + str(decoded.motorX1), 'utf-8'))
                 serialpico.write(bytes('h' + str(decoded.HVB_ARM), 'utf-8'))
                 serialpico.write(bytes('l' + str(decoded.led), 'utf-8'))
-                serialxiao.write(bytes('x' + str(decoded.hvbSpeed), 'utf-8'))
-                serialxiao.write(bytes('b' + str(decoded.hvbDir), 'utf-8'))
+                serialpico.write(bytes('x' + str(decoded.hvbSpeed), 'utf-8'))
+                serialpico.write(bytes('t' + str(decoded.hvbDir), 'utf-8'))
             except:
-                print("err")
+                print("err1")
                 decoded = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.encode_client\x94\x8c\x06Struct\x94\x93\x94)\x81\x94}\x94(\x8c\x08hvbSpeed\x94K\x00\x8c\x06hvbDir\x94K\x00\x8c\x07HVB_ARM\x94K\x00\x8c\x03led\x94K\x00\x8c\nendstopOvr\x94K\x00\x8c\x06homing\x94K\x00\x8c\x06motorY\x94K\x00\x8c\x06motorZ\x94K\x00\x8c\x07motorX1\x94K\x00\x8c\x07motorX2\x94K\x00ub.'
-
