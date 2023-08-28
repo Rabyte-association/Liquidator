@@ -42,12 +42,12 @@ def Initialize():
                 if decoded.encode > 0 and wanted_x != cur_x:
 
                     if wanted_x < cur_x:
-                        serialpico.write(bytes('a' + str(sped_x), 'utf-8'))
+                        serialpico.write(bytes('a' + (abs(sped_x)), 'utf-8'))
                         serialpico.write(bytes('b' + str(sped_x), 'utf-8'))
 
                     elif wanted_x > cur_x:
-                        serialpico.write(bytes('a' + str(abs(sped_x)), 'utf-8'))
                         serialpico.write(bytes('b' + str(abs(sped_x)), 'utf-8'))
+                        serialpico.write(bytes('a' + str(sped_x), 'utf-8'))
 
                     else:
                         return 0
