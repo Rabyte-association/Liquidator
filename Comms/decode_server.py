@@ -35,7 +35,7 @@ def Initialize():
             
             try:
                 decoded = pickle.loads(datahold.data)
-                wanted_x = 1374
+                wanted_x = 9000
                 cur_x = serialencoder.read()
                 sped_x = -75
 
