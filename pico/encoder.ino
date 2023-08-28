@@ -6,7 +6,7 @@ oraz wskazać wanted wanted_x(decode_server.py/line42 są tam wskazane jednostki
 #include "Wire.h"
 
 AS5600L as5600;   //  use default Wire
-int n
+n = 300;
 
 
 void setup()
