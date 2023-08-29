@@ -1,5 +1,5 @@
 import signal
-#from xbox360controller import Xbox360Controller
+from xbox360controller import Xbox360Controller
 
 #Controller translator magic class by LosPedros
 class Axis2:
