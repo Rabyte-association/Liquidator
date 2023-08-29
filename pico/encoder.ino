@@ -7,7 +7,7 @@ oraz wskazać wanted wanted_x(decode_server.py/line42 są tam wskazane jednostki
 
 AS5600L as5600;   //  use default Wire
 n = 300;
-
+bool setOutputMode(uint8_t outputMode) ;
 
 void setup()
 {
