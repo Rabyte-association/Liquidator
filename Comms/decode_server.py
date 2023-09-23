@@ -28,7 +28,11 @@ datahold.data = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.enco
 encoID = '0'
 picoID = '1'
 def Initialize():
+<<<<<<< HEAD
     print("printed error2")
+=======
+
+>>>>>>> 8fb1cef97ba58211c90c88a239349d41fd72b9c6
     serialpico = Serial(port='/dev/ttyACM'+picoID, baudrate=115200, timeout=None)
     serialencoder = Serial(port='/dev/ttyACM'+encoID, baudrate=115200, timeout=0.1)
    
@@ -47,20 +51,20 @@ def Initialize():
                 if decoded.encode > 0 and wanted_x != cur_x:
 
                     if wanted_x < cur_x:
-                        serialpico.write(bytes('a' + (abs(sped_x)), 'utf-8'))
-                        serialpico.write(bytes('b' + str(sped_x), 'utf-8'))
+                        serialencoder.write(bytes('a' + (abs(sped_x)), 'utf-8'))
+                        serialencoder.write(bytes('b' + str(sped_x), 'utf-8'))
 
                     elif wanted_x > cur_x:
-                        serialpico.write(bytes('b' + str(abs(sped_x)), 'utf-8'))
-                        serialpico.write(bytes('a' + str(sped_x), 'utf-8'))
+                        serialencoder.write(bytes('a' + str(sped_x), 'utf-8'))
+                        serialencoder.write(bytes('b' + str(abs(sped_x)), 'utf-8'))
 
                     else:
                         return 0
                     
-                serialpico.write(bytes('y' + str(decoded.motorY), 'utf-8'))
+                serialencoder.write(bytes('y' + str(decoded.motorY), 'utf-8'))
                 serialpico.write(bytes('z' + str(decoded.motorZ), 'utf-8'))
-                serialpico.write(bytes('a' + str(decoded.motorX2), 'utf-8'))
-                serialpico.write(bytes('b' + str(decoded.motorX1), 'utf-8'))
+                serialencoder.write(bytes('a' + str(decoded.motorX2), 'utf-8'))
+                serialencoder.write(bytes('b' + str(decoded.motorX1), 'utf-8'))
                 serialpico.write(bytes('h' + str(decoded.HVB_ARM), 'utf-8'))
                 serialpico.write(bytes('l' + str(decoded.led), 'utf-8'))
                 serialpico.write(bytes('x' + str(decoded.hvbSpeed), 'utf-8'))
