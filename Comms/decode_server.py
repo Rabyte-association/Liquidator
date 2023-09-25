@@ -4,6 +4,7 @@ from serial import Serial
 import threading
 
 
+
 class HoverboardData:      #ten kod nic nie robi, ale jest jako podpowiedz
     HVB_ARM = 0  #przekaźnik zasilania hvb, zmiana chwilowa => start
     stop = 0        #stop ruchu silnikow chwytaka => X
@@ -24,26 +25,37 @@ class DataHold:
 datahold = DataHold()
 datahold.data = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.encode_client\x94\x8c\x06HoverboardData\x94\x93\x94)\x81\x94}\x94(\x8c\x08hvbSpeed\x94K\x00\x8c\x06hvbDir\x94K\x00\x8c\x07HVB_ARM\x94K\x00\x8c\x03led\x94K\x00\x8c\nendstopOvr\x94K\x00\x8c\x06homing\x94K\x00\x8c\x06motorY\x94K\x00\x8c\x06motorZ\x94K\x00\x8c\x07motorX1\x94K\x00\x8c\x07motorX2\x94K\x00ub.'
 
-encoID = '1'
-picoID = '0'
+encoID = '0'
+picoID = '1'
 def Initialize():
+<<<<<<< HEAD
 
+=======
+    print("printed error2")
+>>>>>>> 16b1a70f4d9b956058b204030c70fd47736b09fe
     serialpico = Serial(port='/dev/ttyACM'+picoID, baudrate=115200, timeout=None)
-    serialencoder = Serial(port='/dev/ttyACM'+encoID, baudrate=115200, timeout=None)
+    serialencoder = Serial(port='/dev/ttyACM'+encoID, baudrate=115200, timeout=0.1)
+   
+
 
     while True:
         if len(datahold.data)>2:
-            
+
             try:
+
                 decoded = pickle.loads(datahold.data)
                 wanted_x = 9000
                 cur_x = serialencoder.read()
                 sped_x = -75
-
+                print("printed error")
                 if decoded.encode > 0 and wanted_x != cur_x:
 
                     if wanted_x < cur_x:
+<<<<<<< HEAD
                         serialencoder.write(bytes('a' + str(abs(sped_x)), 'utf-8'))
+=======
+                        serialencoder.write(bytes('a' + (abs(sped_x)), 'utf-8'))
+>>>>>>> 16b1a70f4d9b956058b204030c70fd47736b09fe
                         serialencoder.write(bytes('b' + str(sped_x), 'utf-8'))
 
                     elif wanted_x > cur_x:
@@ -61,8 +73,8 @@ def Initialize():
                 serialpico.write(bytes('l' + str(decoded.led), 'utf-8'))
                 serialpico.write(bytes('x' + str(decoded.hvbSpeed), 'utf-8'))
                 serialpico.write(bytes('t' + str(decoded.hvbDir), 'utf-8'))
-
             except:
+        
 
                 print("error decoding!")
                 decoded = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.encode_client\x94\x8c\x06HoverboardData\x94\x93\x94)\x81\x94}\x94(\x8c\x08hvbSpeed\x94K\x00\x8c\x06hvbDir\x94K\x00\x8c\x07HVB_ARM\x94K\x00\x8c\x03led\x94K\x00\x8c\nendstopOvr\x94K\x00\x8c\x06homing\x94K\x00\x8c\x06motorY\x94K\x00\x8c\x06motorZ\x94K\x00\x8c\x07motorX1\x94K\x00\x8c\x07motorX2\x94K\x00ub.'
