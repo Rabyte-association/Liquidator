@@ -4,10 +4,13 @@ oraz wskazać wanted wanted_x(decode_server.py/line42 są tam wskazane jednostki
 
 #include "AS5600.h"
 #include "Wire.h"
+#include "CytronMotorDriver.h"
 
 AS5600L as5600;   //  use default Wire
 n = 300;
 bool setOutputMode(uint8_t outputMode) ;
+CytronMD motorZ(PWM_DIR, 5, 4);
+CytronMD motorZ2(PWM_DIR, 10, 9);
 
 void setup()
 {
@@ -38,4 +41,25 @@ void loop()
       Serial.println(x);
     }  
   }
+
+  if (Serial.available() > 1) {
+    byte data = Serial.read();
+    if (data == 'y') {
+      speedY = Serial.parseFloat() * 255;
+      speedY2 = Serial.parseFloat() * 255;
+    }
+        if (data == 'a') {
+      speedA = Serial.parseFloat() * 255;
+    }
+    if (data == 'b') {
+      speedB = Serial.parseFloat() * 255;
+    }
+}
+
+  motorY.setSpeed(speedY);
+  motorY.setSpeed(speedY2);
+
+  motorA.setSpeed(speedA);
+  motorB.setSpeed(speedB);
+  
 }

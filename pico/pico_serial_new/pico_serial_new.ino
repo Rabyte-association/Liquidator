@@ -20,11 +20,9 @@ float a = 25;  //accel/decel speed  <10
 
 #define hvb_relay 8  // relay used for tunrning on/off the hoverboard mainboard
 #define led_relay 9  // relay used for driving leds
-#define midEnd 13
 
-
-CytronMD motorY(PWM_DIR, 18, 19);
-CytronMD motorZ(PWM_DIR, 16, 17);
+CytronMD motorY(PWM_DIR, 2, 1);
+CytronMD motorY2(PWM_DIR, 4, 3);
 
 CytronMD motorA(PWM_PWM, 20, 21);
 CytronMD motorB(PWM_PWM, 22, 26);
@@ -63,11 +61,10 @@ void loop() {
   if (Serial.available() > 1) {
 
     byte data = Serial.read();
-    if (data == 'y') {
-      speedY = Serial.parseFloat() * 255;
-    }
+    
     if (data == 'z') {
       speedZ = Serial.parseFloat() * 255;
+      speedZ2 = Serial.parseFloat() * 255;
     }
     if (data == 'h') {
       relay = Serial.parseInt();
@@ -76,12 +73,6 @@ void loop() {
       if (Serial.parseInt() == 1) {
         led = !led;
       }
-    }
-    if (data == 'a') {
-      speedA = Serial.parseFloat() * 255;
-    }
-    if (data == 'b') {
-      speedB = Serial.parseFloat() * 255;
     }
     if (data == 'x') {
       movement = Serial.parseInt();
@@ -105,24 +96,9 @@ void loop() {
   digitalWrite(led_relay, led);
   midVal = digitalRead(midEnd);
 
-  motorY.setSpeed(speedY);
   motorZ.setSpeed(speedZ);
-  if (midVal == LOW) {
+  motorZ2.setSpeed(speedZ2);
 
-    if (speedA > 0) {
-      motorA.setSpeed(0);
-    } else {
-      motorA.setSpeed(speedA);
-    }
-    if (speedB > 0) {
-      motorB.setSpeed(0);
-    } else {
-      motorB.setSpeed(speedB);
-    }
-  } else {
-    motorA.setSpeed(speedA);
-    motorB.setSpeed(speedB);
-  }
   if (!wheelie) {
     digitalWrite(25, HIGH);
     if (movement - movement_current > 0) {
