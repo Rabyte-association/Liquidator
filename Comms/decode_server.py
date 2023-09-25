@@ -28,7 +28,11 @@ datahold.data = b'\x80\x04\x95\x9e\x00\x00\x00\x00\x00\x00\x00\x8c\x13Comms.enco
 encoID = '0'
 picoID = '1'
 def Initialize():
+<<<<<<< HEAD
+
+=======
     print("printed error2")
+>>>>>>> 16b1a70f4d9b956058b204030c70fd47736b09fe
     serialpico = Serial(port='/dev/ttyACM'+picoID, baudrate=115200, timeout=None)
     serialencoder = Serial(port='/dev/ttyACM'+encoID, baudrate=115200, timeout=0.1)
    
@@ -47,7 +51,11 @@ def Initialize():
                 if decoded.encode > 0 and wanted_x != cur_x:
 
                     if wanted_x < cur_x:
+<<<<<<< HEAD
+                        serialencoder.write(bytes('a' + str(abs(sped_x)), 'utf-8'))
+=======
                         serialencoder.write(bytes('a' + (abs(sped_x)), 'utf-8'))
+>>>>>>> 16b1a70f4d9b956058b204030c70fd47736b09fe
                         serialencoder.write(bytes('b' + str(sped_x), 'utf-8'))
 
                     elif wanted_x > cur_x:
