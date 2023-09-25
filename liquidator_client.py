@@ -6,7 +6,7 @@ import client_comms
 from video import video_client
 
 SERVER_IP  = '192.168.0.3'
-SERVER_PORT = 8766
+SERVER_PORT = 8767
 
 #thread_video = threading.Thread(target=cumming.cumming)
 #thread_video = threading.Thread(target=video_client.Initialize, args=[1, SERVER_IP]) # jako argumenty kolejno ilość kamer i ip serwera
